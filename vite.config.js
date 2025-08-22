@@ -31,5 +31,13 @@ export default defineConfig({
             protocol: 'ws',
         },
         origin: 'http://localhost:5173', // match what your browser uses
+        // Proxy WebSocket connections to avoid CORS issues
+        proxy: {
+            '/app': {
+                target: 'ws://localhost:8081',
+                ws: true,
+                changeOrigin: true
+            }
+        }
     },
 })

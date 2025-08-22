@@ -40,3 +40,8 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('/auth/google/redirect', [UserController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [UserController::class, 'handleGoogleCallback'])->name('google.callback');
+
+// WebSocket test route
+Route::get('/websocket-test', function () {
+    return view('websocket-test');
+})->name('websocket.test');
