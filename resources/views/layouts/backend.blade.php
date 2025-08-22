@@ -33,7 +33,7 @@
 
   <!-- Modules -->
   @yield('css')
-  @vite(['resources/sass/main.scss', 'resources/js/codebase/app.js'])
+  @vite(['resources/sass/main.scss', 'resources/js/codebase/app.js', 'resources/js/app.js'])
 
   <!-- Alternatively, you can also include a specific color theme after the main stylesheet to alter the default color theme of the template -->
   {{-- @vite(['resources/sass/main.scss', 'resources/sass/codebase/themes/corporate.scss', 'resources/js/codebase/app.js']) --}}
