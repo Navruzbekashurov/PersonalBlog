@@ -13,8 +13,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
   <title>Codebase - Bootstrap 5 Admin Template &amp; UI Framework</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-  <meta name="description" content="Codebase - Bootstrap 5 Admin Template &amp; UI Framework created by pixelcave">
+
+    <meta name="description" content="Codebase - Bootstrap 5 Admin Template &amp; UI Framework created by pixelcave">
   <meta name="author" content="pixelcave">
   <meta name="robots" content="index, follow">
 

@@ -14,6 +14,8 @@ export default defineConfig({
                 'resources/js/codebase/app.js',
                 'resources/js/app.js',
                 'resources/js/pages/datatables.js',
+                'resources/scss/main.scss',
+                'resources/js/app.js',
             ],
             refresh: true,
         }),

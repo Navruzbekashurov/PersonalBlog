@@ -1,4 +1,6 @@
+
 <div class="chat-container">
+
     <!-- Users list -->
     <div class="users">
         <h3>Users</h3>

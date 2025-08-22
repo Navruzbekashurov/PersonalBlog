@@ -51,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/articles/tag/{tag}', [ArticleController::class, 'byTag'])->name('articles.byTag');
 
+    Route::get('/chat/{user}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{user}', [ChatController::class, 'send'])->name('chat.send');
 });
 
 Route::get('/login', [UserController::class, 'showLogin'])->name('login.page');
