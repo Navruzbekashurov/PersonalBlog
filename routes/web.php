@@ -1,37 +1,10 @@
 <?php
-//
-//use App\Http\Controllers\AdminArticleController;
-//use App\Http\Controllers\ArticleController;
-//use App\Http\Controllers\CommentController;
-//use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\Auth;
-//
-//Route::get('/', [ArticleController::class, 'index'])->name('guest.home');
-//Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
-//Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('articles.comments.store');
-//
-//Route::prefix('admin')->name('admin.')->group(function () {
-//    Route::resource('articles', AdminArticleController::class)->except(['show']);
-//});
-//Route::get('/admin', function () {
-//    return view('admin.dashboard');
-//})->name('dashboard');
-//
-//Route::post('/logout', function (Request $request) {
-//    Auth::logout();
-//    $request->session()->invalidate();
-//    $request->session()->regenerateToken();
-//    return redirect('/');
-//})->name('logout');
-
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\User\UserController;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', [ArticleController::class, 'index'])
     ->middleware(['auth'])

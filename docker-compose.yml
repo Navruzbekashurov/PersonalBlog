@@ -32,6 +32,23 @@ services:
             - app
         networks:
             - laravel
+    npm:
+        image: node:20-alpine
+        container_name: node_server
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - node_modules:/var/www/node_modules
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+            - WATCHPACK_POLLING=true
+        ports:
+            - "5173:5173"
+        networks:
+            - laravel
+        depends_on:
+            - app
+        command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
 
     mysql:
         image: mysql:8.0
@@ -72,3 +89,5 @@ networks:
 
 volumes:
     mysql-data:
+    node_modules:
+
