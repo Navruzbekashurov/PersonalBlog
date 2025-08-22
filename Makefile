@@ -68,3 +68,6 @@ npm-build: ## Build assets for production
 
 db: ## Connect to MySQL CLI
 	$(DC) exec mysql mysql -ularavel -psecret personalblog
+
+up:
+	docker-compose up -d
