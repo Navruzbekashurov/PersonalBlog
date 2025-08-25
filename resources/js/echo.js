@@ -1,35 +1,43 @@
-console.log("✅ Echo.js yuklandi")
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
-import Echo from 'laravel-echo'
-import Pusher from 'pusher-js'      // <-- add
+window.Pusher = Pusher;
 
-// Make the Pusher client globally available for Echo
-window.Pusher = Pusher
-
-const host   = import.meta.env.VITE_REVERB_HOST || window.location.hostname
-const port   = Number(import.meta.env.VITE_REVERB_PORT || 8081)
-const scheme = (import.meta.env.VITE_REVERB_SCHEME || 'http').toLowerCase()
+const host   = import.meta.env.VITE_REVERB_HOST || window.location.hostname;
+const port   = Number(import.meta.env.VITE_REVERB_PORT || 8080);
+const scheme = import.meta.env.VITE_REVERB_SCHEME || 'http';
 
 window.Echo = new Echo({
     broadcaster: 'reverb',
-    key: import.meta.env.VITE_REVERB_APP_KEY || 'local-key',
-    wsHost: host,
-    wsPort: port,
-    wssPort: port,
-    forceTLS: scheme === 'https',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST || window.location.hostname,
+    wsPort: Number(import.meta.env.VITE_REVERB_PORT || 8080),
+    forceTLS: import.meta.env.VITE_REVERB_SCHEME === 'https',
     enabledTransports: ['ws', 'wss'],
-    disableStats: true,               // <-- important for Reverb
-    activityTimeout: 30000,
-    pongTimeout: 30000,
-})
+    disableStats: true,
+    authEndpoint: '/broadcasting/auth',
+    auth: {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    }
+});
 
-// (Optional) debug hooks — guard in case connector shape differs
-const conn = window.Echo?.connector?.pusher?.connection
-if (conn) {
-    conn.bind('connected',     () => console.log('🔗 WebSocket connected!'))
-    conn.bind('disconnected',  () => console.log('❌ WebSocket disconnected!'))
-    conn.bind('error',         e  => console.error('🚨 WebSocket error:', e))
-    conn.bind('state_change',  s  => console.log('🔄 WS state:', s.previous, '->', s.current))
-    conn.bind('ping',          () => console.log('🏓 Ping sent'))
-    conn.bind('pong',          () => console.log('🏓 Pong received'))
-}
+// Private chat kanaliga subscribe
+window.listenToChat = function(receiverId, currentUserId) {
+    if (!window.Echo) return;
+
+    window.Echo.private(`chat.${receiverId}`)
+        .listen('MessageSent', (e) => {
+            console.log('📩 Yangi xabar:', e.message.message);
+
+            const messagesEl = document.getElementById('chatMessages');
+            if (messagesEl) {
+                const div = document.createElement('div');
+                div.className = e.message.sender_id === currentUserId ? 'message sent' : 'message received';
+                div.innerHTML = `<strong>${e.user.name}</strong><br>${e.message.message}`;
+                messagesEl.appendChild(div);
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+            }
+        });
+};

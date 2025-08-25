@@ -6,6 +6,13 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('chats', function ($user, $chat) {
-    return true;
+
+
+Broadcast::routes(['middleware' => ['auth:api']]);
+
+Broadcast::channel('chat.{receiverId}', function ($user, $receiverId) {
+    return (int) $user->id === (int) $receiverId;
 }, ['guards' => ['api']]);
+
+
+

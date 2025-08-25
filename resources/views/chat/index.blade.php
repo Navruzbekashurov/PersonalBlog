@@ -1,4 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Chat</title>
 
+    {{-- Styles --}}
+    <style>
+        .chat-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: 75vh;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        .users { background: #f9fafb; overflow-y: auto; }
+        .users h3 { padding: 14px; background: #e0e7ff; margin: 0; }
+        .user { display:block; padding: 12px; cursor: pointer; text-decoration: none; color: inherit; border-bottom: 1px solid #e5e7eb; }
+        .user:hover { background: #f3f4f6; }
+        .user.active { background: #bfdbfe; }
+        .chat { display: flex; flex-direction: column; }
+        .chat-header { padding: 14px; background: #e0e7ff; font-weight: bold; }
+        .messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; }
+        .message { max-width: 65%; margin-bottom: 10px; padding: 10px 15px; border-radius: 20px; }
+        .sent { background: #3b82f6; color: white; align-self: flex-end; }
+        .received { background: #e5e7eb; color: #1f2937; align-self: flex-start; }
+        .chat-input { display: flex; border-top: 1px solid #e5e7eb; padding: 8px; gap: 8px; }
+        .chat-input input { flex: 1; border: 1px solid #d1d5db; border-radius: 20px; padding: 8px 12px; outline: none; }
+        .chat-input button { background: #3b82f6; color: white; padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; }
+        .chat-input button:hover { background: #2563eb; }
+    </style>
+
+    @vite('resources/js/app.js') {{-- agar umumiy Vite bundle ishlatilsa --}}
+</head>
+<body>
 <div class="chat-container">
 
     <!-- Users list -->
@@ -44,39 +82,23 @@
     </div>
 </div>
 
-<style>
-    .chat-container {
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        height: 75vh;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        overflow: hidden;
-        background: #ffffff;
-    }
-    .users { background: #f9fafb; overflow-y: auto; }
-    .users h3 { padding: 14px; background: #e0e7ff; margin: 0; }
-    .user { display:block; padding: 12px; cursor: pointer; text-decoration: none; color: inherit; border-bottom: 1px solid #e5e7eb; }
-    .user:hover { background: #f3f4f6; }
-    .user.active { background: #bfdbfe; }
-    .chat { display: flex; flex-direction: column; }
-    .chat-header { padding: 14px; background: #e0e7ff; font-weight: bold; }
-    .messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; }
-    .message { max-width: 65%; margin-bottom: 10px; padding: 10px 15px; border-radius: 20px; }
-    .sent { background: #3b82f6; color: white; align-self: flex-end; }
-    .received { background: #e5e7eb; color: #1f2937; align-self: flex-start; }
-    .chat-input { display: flex; border-top: 1px solid #e5e7eb; padding: 8px; gap: 8px; }
-    .chat-input input { flex: 1; border: 1px solid #d1d5db; border-radius: 20px; padding: 8px 12px; outline: none; }
-    .chat-input button { background: #3b82f6; color: white; padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; }
-    .chat-input button:hover { background: #2563eb; }
-</style>
-
 <script>
-    // Always scroll to bottom
+    // Always scroll to bottom on load
     window.addEventListener('load', () => {
         const messages = document.getElementById('chatMessages');
-        if (messages) {
-            messages.scrollTop = messages.scrollHeight;
-        }
+        if (messages) messages.scrollTop = messages.scrollHeight;
     });
 </script>
+
+{{-- Echo JS --}}
+@vite('resources/js/echo.js')
+
+<script type="module">
+    const receiverId = @json($selectedUser->id ?? null);
+    const currentUserId = @json(auth()->id());
+    if (receiverId) {
+        window.listenToChat(receiverId, currentUserId);
+    }
+</script>
+</body>
+</html>

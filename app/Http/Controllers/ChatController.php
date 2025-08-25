@@ -27,12 +27,9 @@ class ChatController extends Controller
         return view('chat.index', compact('users', 'selectedUser', 'messages'));
     }
 
-    // Xabar yuborish
     public function send(Request $request, $receiverId)
     {
-        $request->validate([
-            'message' => 'required|string|max:1000',
-        ]);
+        $request->validate(['message' => 'required|string|max:1000']);
 
         $message = Message::create([
             'sender_id' => auth()->id(),
@@ -40,8 +37,9 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new MessageSent(auth()->user(), $message->message))->toOthers();
+        broadcast(new MessageSent(auth()->user(), $message))->toOthers();
 
         return back();
     }
+
 }
