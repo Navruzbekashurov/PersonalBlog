@@ -13,7 +13,7 @@ window.Echo = new Echo({
     wsHost: import.meta.env.VITE_REVERB_HOST || window.location.hostname,
     wsPort: Number(import.meta.env.VITE_REVERB_PORT || 8080),
     forceTLS: import.meta.env.VITE_REVERB_SCHEME === 'https',
-    enabledTransports: ['ws', 'wss'],
+    enabledTransports: ['ws'],  // faqat WebSocket
     disableStats: true,
     authEndpoint: '/broadcasting/auth',
     auth: {
@@ -22,6 +22,7 @@ window.Echo = new Echo({
         }
     }
 });
+
 
 // Private chat kanaliga subscribe
 window.listenToChat = function(receiverId, currentUserId) {

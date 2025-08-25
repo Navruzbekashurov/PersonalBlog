@@ -2,29 +2,7 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Reverb Server
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default server used by Reverb to handle
-    | incoming messages as well as broadcasting message to all your
-    | connected clients. At this time only "reverb" is supported.
-    |
-    */
-
     'default' => env('REVERB_SERVER', 'reverb'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Reverb Servers
-    |--------------------------------------------------------------------------
-    |
-    | Here you may define details for each of the supported Reverb servers.
-    | Each server has its own configuration options that are defined in
-    | the array below. You should ensure all the options are present.
-    |
-    */
 
     'servers' => [
         'reverb' => [
@@ -36,6 +14,10 @@ return [
                 'enabled' => env('REVERB_SCALING_ENABLED', false),
                 'channel' => env('REVERB_SCALING_CHANNEL', 'reverb'),
             ],
+
+            'pulse_ingest_interval' => env('REVERB_PULSE_INGEST_INTERVAL', 5),
+            'telescope_ingest_interval' => env('REVERB_TELESCOPE_INGEST_INTERVAL', 15),
+            'ping_interval' => env('REVERB_PING_INTERVAL', 25),
         ],
     ],
 
