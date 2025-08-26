@@ -7,12 +7,10 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 
-
-Broadcast::routes(['middleware' => ['auth:api']]);
-
-Broadcast::channel('chat.{receiverId}', function ($user, $receiverId) {
-    return (int) $user->id === (int) $receiverId;
-}, ['guards' => ['api']]);
+Broadcast::channel('chat', function ($user) {
+    // Allow all authenticated users to join the chat channel
+    return $user !== null;
+});
 
 
 
