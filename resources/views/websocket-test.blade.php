@@ -23,7 +23,7 @@
     <script>
         const statusDiv = document.getElementById('status');
         const logsDiv = document.getElementById('logs');
-        
+
         function addLog(message, type = 'info') {
             const time = new Date().toLocaleTimeString();
             const colors = {
@@ -32,16 +32,16 @@
                 error: '#dc3545',
                 warning: '#ffc107'
             };
-            
+
             const logEntry = document.createElement('div');
             logEntry.style.color = colors[type] || colors.info;
             logEntry.style.marginBottom = '5px';
             logEntry.innerHTML = `[${time}] ${message}`;
-            
+
             logsDiv.appendChild(logEntry);
             logsDiv.scrollTop = logsDiv.scrollHeight;
         }
-        
+
         function updateStatus(message, type = 'info') {
             const colors = {
                 info: '#17a2b8',
@@ -49,38 +49,38 @@
                 error: '#dc3545',
                 warning: '#ffc107'
             };
-            
+
             statusDiv.style.backgroundColor = colors[type] + '20';
             statusDiv.style.color = colors[type];
             statusDiv.innerHTML = `Status: ${message}`;
         }
-        
+
         function testConnection() {
             addLog('🧪 Testing WebSocket connection...', 'info');
-            
+
             if (window.Echo) {
                 addLog('✅ Echo instance found', 'success');
-                
+
                 // Test channel subscription
-                const channel = window.Echo.channel('test-channel');
+                const channel = window.Echo.channel('chat');
                 addLog('📡 Subscribed to test-channel', 'info');
-                
+
                 updateStatus('Connected and testing...', 'success');
             } else {
                 addLog('❌ Echo instance not found', 'error');
                 updateStatus('Echo not initialized', 'error');
             }
         }
-        
+
         // Wait for Echo to be initialized
         document.addEventListener('DOMContentLoaded', function() {
             addLog('🚀 Page loaded, waiting for Echo...', 'info');
-            
+
             setTimeout(() => {
                 if (window.Echo) {
                     addLog('✅ Echo initialized successfully', 'success');
                     updateStatus('Echo ready', 'success');
-                    
+
                     // Test automatic connection
                     testConnection();
                 } else {
@@ -89,7 +89,7 @@
                 }
             }, 2000);
         });
-        
+
         // Override console.log to capture Echo logs
         const originalLog = console.log;
         console.log = function(...args) {
@@ -98,7 +98,7 @@
                 addLog(args.join(' '), 'info');
             }
         };
-        
+
         const originalError = console.error;
         console.error = function(...args) {
             originalError.apply(console, args);
