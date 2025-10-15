@@ -1,9 +1,12 @@
 <?php
 
+use App\Events\MessageSent;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\User\UserController;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', [ArticleController::class, 'index'])
@@ -28,6 +31,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/{user}', [ChatController::class, 'send'])->name('chat.send');
 });
 
+Route::post('/broadcasting/auth', function () {
+    return Broadcast::auth(request());
+})->middleware('web');
+
+
 Route::get('/login', [UserController::class, 'showLogin'])->name('login.page');
 Route::post('/login', [UserController::class, 'login'])->name('login');
 
@@ -45,3 +53,13 @@ Route::get('/auth/google/callback', [UserController::class, 'handleGoogleCallbac
 Route::get('/websocket-test', function () {
     return view('websocket-test');
 })->name('websocket.test');
+
+
+
+use App\Events\TestEvent;
+
+Route::get('/broadcast-test', function () {
+    broadcast(new TestEvent("Salom Reverb!"));
+    return "Event yuborildi ✅";
+});
+

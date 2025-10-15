@@ -29,6 +29,7 @@ return [
                 'scheme' => env('REVERB_SCHEME', 'http'),
                 'useTLS' => env('REVERB_SCHEME', 'http') === 'https',
             ],
+            'guard' => 'web',
         ],
     ],
 

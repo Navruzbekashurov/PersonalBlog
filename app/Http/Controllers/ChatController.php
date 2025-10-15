@@ -11,6 +11,7 @@ class ChatController extends Controller
 {
     public function show($userId)
     {
+
         $selectedUser = User::findOrFail($userId);
         $users = User::where('id', '!=', auth()->id())->get();
 
@@ -20,9 +21,7 @@ class ChatController extends Controller
         })->orWhere(function($q) use ($userId) {
             $q->where('sender_id', $userId)
                 ->where('receiver_id', auth()->id());
-        })
-            ->orderBy('created_at')
-            ->get();
+        })->orderBy('created_at')->get();
 
         return view('chat.index', compact('users', 'selectedUser', 'messages'));
     }
@@ -37,9 +36,10 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new MessageSent(auth()->user(), $message))->toOthers();
+
+        // **broadcast** event
+        MessageSent::dispatch(auth()->user(), $message);
 
         return back();
     }
-
 }
